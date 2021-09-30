@@ -12,25 +12,19 @@ This project offers Dockerfiles for:
 
 
 ```bash
-❯ tree .
+ tree .
 .
-├── Checksum.ee
-├── Checksum.se2
 ├── Dockerfile
 ├── LINUX.X64_213000_db_home.zip
+├── README.md
 ├── checkDBStatus.sh
 ├── checkSpace.sh
-├── createDB.sh
-├── createObserver.sh
-├── db_inst.rsp
-├── dbca.rsp.tmpl
 ├── installDBBinaries.sh
-├── relinkOracleBinary.sh
-├── runOracle.sh
-├── runUserScripts.sh
-├── setPassword.sh
-├── setupLinuxEnv.sh
-└── startDB.sh
+├── packages
+│   └── database-installation-guide-linux.pdf
+├── run.sh
+├── script
+└── setupLinuxEnv.sh
 ```
 
 Before you build the image make sure that you have provided the installation binaries and put them into the right folder. Once you have chosen which edition and version you want to build an image of, go into the **dockerfiles** folder and run the **docker build . -t oracle_21.3.0 --build-arg DB_EDITION=EE --build-arg ORACLE_HOSTNAME=localhost** command:
