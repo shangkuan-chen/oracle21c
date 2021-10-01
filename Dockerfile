@@ -18,18 +18,20 @@ ENV ORACLE_BASE=/u01/app/oracle \
     CHECK_DB_FILE="checkDBStatus.sh"
 
 # Use second ENV so that variable get substituted
-ENV PATH=$ORACLE_HOME/bin:$ORACLE_HOME/OPatch/:/usr/sbin:$PATH \
-    LD_LIBRARY_PATH=$ORACLE_HOME/lib:/usr/lib \
-    CLASSPATH=$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib
+ENV PATH=${ORACLE_HOME}/bin:${ORACLE_HOME}/OPatch/:/usr/sbin:$PATH \
+    LD_LIBRARY_PATH=${ORACLE_HOME}/lib:/usr/lib \
+    CLASSPATH=${ORACLE_HOME}/jlib:${ORACLE_HOME}/rdbms/jlib
 
 # Copy files needed during both installation and runtime
 # -------------
-COPY $SETUP_LINUX_FILE $CHECK_SPACE_FILE $CHECK_DB_FIL $INSTALL_DIR/
+COPY $SETUP_LINUX_FILE ${CHECK_SPACE_FILE} ${CHECK_DB_FIL} ${INSTALL_DIR}/
+
 ADD run.sh /run.sh
-RUN chmod ug+x $INSTALL_DIR/*.sh && \
+
+RUN chmod ug+x ${INSTALL_DIR}/*.sh && \
     sync && \
-    $INSTALL_DIR/$CHECK_SPACE_FILE && \
-    $INSTALL_DIR/$SETUP_LINUX_FILE
+    ${INSTALL_DIR}/${CHECK_SPACE_FILE} && \
+    ${INSTALL_DIR}/${SETUP_LINUX_FILE}
 
 #############################################
 # -------------------------------------------
@@ -42,13 +44,13 @@ ARG DB_EDITION
 ARG ORACLE_HOSTNAME
 
 # Copy DB install file
-COPY --chown=oracle:oinstall $INSTALL_FILE_1 $INSTALL_DB_BINARIES_FILE $INSTALL_DIR/
+COPY --chown=oracle:oinstall $INSTALL_FILE_1 ${INSTALL_DB_BINARIES_FILE} $INSTALL_DIR/
 
 # Install DB software binaries
 USER oracle
-RUN echo "chmod ug+x $INSTALL_DIR/*.sh && \
+RUN echo "chmod ug+x ${INSTALL_DIR}/*.sh && \
     sync && \
-    $INSTALL_DIR/$INSTALL_DB_BINARIES_FILE $DB_EDITION" > $INSTALL_DIR/run
+    ${INSTALL_DIR}/${INSTALL_DB_BINARIES_FILE} ${DB_EDITION}" > ${INSTALL_DIR}/run.txt
 
 #############################################
 # -------------------------------------------
@@ -56,20 +58,20 @@ RUN echo "chmod ug+x $INSTALL_DIR/*.sh && \
 # -------------------------------------------
 #############################################
 
-FROM base
+# FROM base
 
-USER oracle
-COPY --chown=oracle:oinstall --from=builder $ORACLE_BASE $ORACLE_BASE
+# USER oracle
+# COPY --chown=oracle:oinstall --from=builder $ORACLE_BASE $ORACLE_BASE
 
-USER root
-RUN $ORACLE_BASE/oraInventory/orainstRoot.sh && \
-    $ORACLE_HOME/root.sh
+# USER root
+# RUN ${ORA_INVENTORY}/orainstRoot.sh && \
+#     ${ORACLE_HOME}/root.sh
 
-USER oracle
-WORKDIR /home/oracle
+# USER oracle
+# WORKDIR /home/oracle
 
-HEALTHCHECK --interval=1m --start-period=5m \
-   CMD "$ORACLE_BASE/$CHECK_DB_FILE" >/dev/null || exit 1
+# HEALTHCHECK --interval=1m --start-period=5m \
+#    CMD "$ORACLE_BASE/$CHECK_DB_FILE" >/dev/null || exit 1
 
 # Define default command to start Oracle Database. 
 CMD ["/bin/bash", "-c", "/run.sh"]

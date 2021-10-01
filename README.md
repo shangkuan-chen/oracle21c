@@ -54,4 +54,3 @@ Before you build the image make sure that you have provided the installation bin
  => => writing image sha256:51504d31cfb7a48eadbcb8de9c8f97485354d59481269b6a9d852e807a249ad8                                                                               0.0s
  => => naming to docker.io/library/oracle_21.3.0
 ```
-
