@@ -74,4 +74,5 @@ HEALTHCHECK --interval=1m --start-period=5m \
    CMD "$ORACLE_BASE/$CHECK_DB_FILE" >/dev/null || exit 1
 
 # Define default command to start Oracle Database. 
-CMD ["bash", "-c", "/home/oracle/run.sh"]
+EXPOSE 1521/tcp
+CMD ["/bin/bash","/home/oracle/run.sh"]

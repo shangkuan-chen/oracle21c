@@ -1,1 +1,5 @@
-while true; do sleep 15 ; echo "background"; done &
+#!/bin/bash
+
+while sleep 60
+do echo "background"
+done
