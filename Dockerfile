@@ -15,7 +15,6 @@ ENV ORACLE_BASE=/u01/app/oracle \
     CV_ASSUME_DISTID=OEL7 \
     CHECK_SPACE_FILE="checkSpace.sh" \
     INSTALL_DB_BINARIES_FILE="installDBBinaries.sh" \
-    CHECK_DB_FILE="checkDBStatus.sh" \
     INSTALL_RSP="install_dbbinaries.rsp"
 
 # Use second ENV so that variable get substituted
@@ -69,9 +68,6 @@ RUN ${ORACLE_BASE}/oraInventory/orainstRoot.sh && \
 
 USER oracle
 WORKDIR /home/oracle
-
-HEALTHCHECK --interval=1m --start-period=5m \
-   CMD "$ORACLE_BASE/$CHECK_DB_FILE" >/dev/null || exit 1
 
 # Define default command to start Oracle Database. 
 EXPOSE 1521/tcp
