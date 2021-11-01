@@ -24,7 +24,7 @@ ENV PATH=${ORACLE_HOME}/bin:${ORACLE_HOME}/OPatch/:/usr/sbin:$PATH \
 
 # Copy files needed during both installation and runtime
 # -------------
-COPY ${SETUP_LINUX_FILE} ${CHECK_SPACE_FILE} ${CHECK_DB_FILE} ${INSTALL_DIR}/
+COPY ${SETUP_LINUX_FILE} ${CHECK_SPACE_FILE} ${INSTALL_DIR}/
 
 RUN chmod ug+x ${INSTALL_DIR}/*.sh && \
     sync && \
